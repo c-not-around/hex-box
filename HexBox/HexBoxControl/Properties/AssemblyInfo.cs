@@ -2,32 +2,32 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// Управление общими сведениями о сборке осуществляется с помощью 
+// Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("AVRDudka")]
+[assembly: AssemblyTitle("HexBoxControl")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("AVRDudka")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2024")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("HexBoxControl")]
+[assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Параметр ComVisible со значением FALSE делает типы в сборке невидимыми 
-// для COM-компонентов.  Если требуется обратиться к типу в этой сборке через 
-// COM, задайте атрибуту ComVisible значение TRUE для этого типа.
+// Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
+// для компонентов COM. Если необходимо обратиться к типу в этой сборке через
+// компонента COM, задайте для атрибута ComVisible этого типа значение TRUE.
 [assembly: ComVisible(false)]
 
-// Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("c7aa9ee8-69bb-4a4e-ab17-4a84ebd9782a")]
+// Следующий идентификатор GUID представляет идентификатор typelib, если этот проект доступен через COM
+[assembly: Guid("1045ce45-2de1-4597-b43b-2effc0000ab5")]
 
-// Сведения о версии сборки состоят из следующих четырех значений:
+// Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
 //      Основной номер версии
-//      Дополнительный номер версии 
-//   Номер сборки
-//      Редакция
+//      Дополнительный номер версии
+//      Номер сборки
+//      Номер редакции
 //
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:

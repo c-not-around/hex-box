@@ -149,6 +149,7 @@
             this.DumpBox.TabIndex = 0;
             this.DumpBox.Text = "hexBox1";
             this.DumpBox.ViewMode = HexBoxControl.HexBoxViewMode.BytesAscii;
+            this.DumpBox.ColumsChanged += new System.EventHandler(this.DumpBoxColumnsChanged);
             // 
             // OpenFile
             // 

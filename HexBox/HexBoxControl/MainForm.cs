@@ -12,7 +12,7 @@ namespace HexBoxControl
             InitializeComponent();
 
             Mode.Items.AddRange(Enum.GetNames(typeof(HexBoxViewMode)));
-            Mode.SelectedIndex = 2;
+            Mode.SelectedIndex = 1;
 
             Enable.Checked = true;
             Columns.Value  = DumpBox.Columns;
@@ -37,6 +37,11 @@ namespace HexBoxControl
             DumpBox.Dump = dump;
         }
 
+        private void DumpBoxColumnsChanged(object sender, EventArgs e)
+        {
+            Columns.Value = DumpBox.Columns;
+        }
+
         private void ModeSelectedIndexChanged(object sender, EventArgs e)
         {
             HexBoxViewMode mode;
@@ -56,7 +61,10 @@ namespace HexBoxControl
 
         private void ColumnsValueChanged(object sender, EventArgs e)
         {
-            DumpBox.Columns = Convert.ToInt32(Columns.Value);
+            if (!DumpBox.ColumnsAuto)
+            {
+                DumpBox.Columns = Convert.ToInt32(Columns.Value);
+            }
         }
 
         private void EncodingSelectSelectedIndexChanged(object sender, EventArgs e)

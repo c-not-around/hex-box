@@ -1,4 +1,4 @@
-﻿namespace HexBoxControl
+namespace HexBoxExample
 {
     partial class MainForm
     {
@@ -198,7 +198,7 @@
 
         #endregion
 
-        private HexBox DumpBox;
+        private HexBoxControl.HexBox DumpBox;
         private System.Windows.Forms.ComboBox Mode;
         private System.Windows.Forms.CheckBox AutoSize;
         private System.Windows.Forms.CheckBox Enable;

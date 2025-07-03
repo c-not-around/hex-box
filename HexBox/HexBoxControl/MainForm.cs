@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows.Forms;
+using HexBoxControl;
 
 
-namespace HexBoxControl
+namespace HexBoxExample
 {
     public partial class MainForm : Form
     {
@@ -37,29 +38,19 @@ namespace HexBoxControl
             DumpBox.Dump = dump;
         }
 
-        private void DumpBoxColumnsChanged(object sender, EventArgs e)
-        {
-            Columns.Value = DumpBox.Columns;
-        }
+        private void DumpBoxColumnsChanged(object sender, EventArgs e) => Columns.Value = DumpBox.Columns;
 
-        private void ModeSelectedIndexChanged(object sender, EventArgs e)
+		private void ModeSelectedIndexChanged(object sender, EventArgs e)
         {
-            HexBoxViewMode mode;
-            Enum.TryParse(Mode.SelectedItem.ToString(), out mode);
+            Enum.TryParse(Mode.SelectedItem.ToString(), out HexBoxViewMode mode);
             DumpBox.ViewMode = mode;
         }
 
-        private void AutoSizeCheckedChanged(object sender, EventArgs e)
-        {
-            DumpBox.ColumnsAuto = AutoSize.Checked;
-        }
+        private void AutoSizeCheckedChanged(object sender, EventArgs e) => DumpBox.ColumnsAuto = AutoSize.Checked;
 
-        private void EnableCheckedChanged(object sender, EventArgs e)
-        {
-            DumpBox.Enabled = Enable.Checked;
-        }
+		private void EnableCheckedChanged(object sender, EventArgs e) => DumpBox.Enabled = Enable.Checked;
 
-        private void ColumnsValueChanged(object sender, EventArgs e)
+		private void ColumnsValueChanged(object sender, EventArgs e)
         {
             if (!DumpBox.ColumnsAuto)
             {
@@ -67,12 +58,9 @@ namespace HexBoxControl
             }
         }
 
-        private void EncodingSelectSelectedIndexChanged(object sender, EventArgs e)
-        {
-            DumpBox.CharConverter = EncodingSelect.SelectedItem as ICharConverter;
-        }
+        private void EncodingSelectSelectedIndexChanged(object sender, EventArgs e) => DumpBox.CharConverter = EncodingSelect.SelectedItem as ICharConverter;
 
-        private void OpenFileClick(object sender, EventArgs e)
+		private void OpenFileClick(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
 

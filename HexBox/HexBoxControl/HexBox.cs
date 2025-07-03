@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -14,55 +13,24 @@ namespace HexBoxControl
         DoubleWords = 8,
         QuadWords   = 16
     };
-
-    public interface ICharConverter
-    {
-        char ToChar(byte data);
-
-        byte ToByte(char c);
-    }
     
     public class HexBoxEditEventArgs : EventArgs
     {
-        #region Fields
-        private long  _Offset;
-        private ulong _OldValue;
-        private ulong _NewValue;
-        #endregion
-
         #region Ctors
         public HexBoxEditEventArgs(long offset, ulong prev, ulong current)
         {
-            _Offset   = offset;
-            _OldValue = prev;
-            _NewValue = current;
+            Offset   = offset;
+            OldValue = prev;
+            NewValue = current;
         }
-        #endregion
+		#endregion
 
-        #region Properties
-        public long Offset
-        {
-            get
-            {
-                return _Offset;
-            }
-        }
+		#region Properties
+		public long Offset { get; private set; }
 
-        public ulong OldValue
-        {
-            get
-            {
-                return _OldValue;
-            }
-        }
+        public ulong OldValue { get; private set; }
 
-        public ulong NewValue
-        {
-            get
-            {
-                return _NewValue;
-            }
-        }
+        public ulong NewValue { get; private set; }
         #endregion
     }
     
@@ -137,28 +105,13 @@ namespace HexBoxControl
         #endregion
 
         #region Properties
-        private int BytesPerCell
-        {
-            get
-            {
-                return (int)_ViewMode >> 1;
-            }
-        }
+        private int BytesPerCell => (int)_ViewMode >> 1;
 
-        private int HexSymbolsPerCell
-        {
-            get
-            {
-                return (int)_ViewMode & 0x1E;
-            }
-        }
+        private int HexSymbolsPerCell => (int)_ViewMode & 0x1E;
 
         public HexBoxViewMode ViewMode
         {
-            get
-            {
-                return _ViewMode;
-            }
+            get => _ViewMode;
 
             set
             {
@@ -180,10 +133,7 @@ namespace HexBoxControl
 
         public int Columns
         {
-            get
-            {
-                return _DataColums;
-            }
+            get => _DataColums;
 
             set
             {
@@ -199,28 +149,13 @@ namespace HexBoxControl
             }
         }
 
-        public long Rows
-        {
-            get
-            {
-                return _Lines;
-            }
-        }
+        public long Rows => _Lines;
 
-        public long DisplayedRows
-        {
-            get
-            {
-                return _DataRows;
-            }
-        }
+        public long DisplayedRows => _DataRows;
 
         public byte[] Dump
         {
-            get
-            {
-                return _Dump;
-            }
+            get => _Dump;
 
             set
             {
@@ -237,10 +172,7 @@ namespace HexBoxControl
         
         public ICharConverter CharConverter
         {
-            get
-            {
-                return _CharConverter;
-            }
+            get => _CharConverter;
 
             set
             {
@@ -258,10 +190,7 @@ namespace HexBoxControl
 
         public bool ColumnsAuto
         {
-            get
-            {
-                return _ColumnsAuto;
-            }
+            get => _ColumnsAuto;
 
             set
             {
@@ -279,10 +208,7 @@ namespace HexBoxControl
 
         public override Font Font
         {
-            get
-            {
-                return base.Font;
-            }
+            get => base.Font;
 
             set
             {
@@ -309,10 +235,7 @@ namespace HexBoxControl
 
         public new bool Enabled
         {
-            get
-            {
-                return base.Enabled;
-            }
+            get => base.Enabled;
 
             set
             {
@@ -365,10 +288,7 @@ namespace HexBoxControl
         #endregion
 
         #region Handlers
-        private void OnScrolling(object sender, ScrollEventArgs e)
-        {
-            Scroll();
-        }
+        private void OnScrolling(object sender, ScrollEventArgs e) => Scroll();
 
         private void EditKeyPress(object sender, KeyPressEventArgs e)
         {
@@ -401,17 +321,11 @@ namespace HexBoxControl
         #endregion
 
         #region Utils
-        private Brush GetBrush(Color color)
-        {
-            return new SolidBrush(Enabled ? color : Color.LightGray);
-        }
+        private Brush GetBrush(Color color) => new SolidBrush(Enabled ? color : Color.LightGray);
 
-        private Pen GetPen(Color color)
-        {
-            return new Pen(Enabled ? color : Color.LightGray);
-        }
+		private Pen GetPen(Color color) => new Pen(Enabled? color : Color.LightGray);
 
-        private ulong GetCellValue(long index)
+		private ulong GetCellValue(long index)
         {
             ulong data = 0;
             index += BytesPerCell;
@@ -725,90 +639,5 @@ namespace HexBoxControl
             }
         }
         #endregion
-    }
-
-    public class AnsiCharConvertor : ICharConverter
-    {
-        public virtual char ToChar(byte data)
-        {
-            char c = (char)data;
-            return (c < '!') || ('\x7e' < c && c < '\xa1') || (c == '\xad') ? '\0' : c;
-        }
-
-        public virtual byte ToByte(char c)
-        {
-            return (byte)c;
-        }
-
-        public override string ToString()
-        {
-            return "ANSI";
-        }
-    }
-
-    public class AsciiCharConvertor : ICharConverter
-    {
-        private Encoding _Encoding = Encoding.ASCII;
-
-        public virtual char ToChar(byte data)
-        {
-            char? c = _Encoding.GetChars(new byte[1] { data })[0];
-            return (c == null) || (c < '!') || (c == '\x7f') ? '\0' : (char)c;
-        }
-
-        public virtual byte ToByte(char c)
-        {
-            byte? b = _Encoding.GetBytes(new char[1] { c })[0];
-            return (b != null) ? (byte)b : (byte)0;
-        }
-
-        public override string ToString()
-        {
-            return "ASCII";
-        }
-    }
-
-    public class Utf8CharConvertor : ICharConverter
-    {
-        private Encoding _Encoding = Encoding.UTF8;
-
-        public virtual char ToChar(byte data)
-        {
-            char? c = _Encoding.GetChars(new byte[1] { data })[0];
-            return (c == null) || (c < '!') || (c == '\x7f') ? '\0' : (char)c;
-        }
-
-        public virtual byte ToByte(char c)
-        {
-            byte? b = _Encoding.GetBytes(new char[1] { c })[0];
-            return (b != null) ? (byte)b : (byte)0;
-        }
-
-        public override string ToString()
-        {
-            return "UTF-8";
-        }
-    }
-
-    public class Cp1251CharConvertor : ICharConverter
-    {
-        private Encoding _Encoding = Encoding.GetEncoding(1251);
-
-        public virtual char ToChar(byte data)
-        {
-            char? c = _Encoding.GetChars(new byte[1] { data })[0];
-            return (c == null) || (c < '!') || (c == '\x7f') || (c == '\xa0') || (c == '\xad') ? '\0' : (char)c;
-        }
-
-        public virtual byte ToByte(char c)
-        {
-            byte? b = _Encoding.GetBytes(new char[1] { c })[0];
-            return (b != null) ? (byte)b : (byte)0;
-        }
-
-        public override string ToString()
-        {
-            return "CP-1251";
-        }
     }
 }

@@ -23,10 +23,10 @@ namespace HexBoxControl
             OldValue = prev;
             NewValue = current;
         }
-		#endregion
+        #endregion
 
-		#region Properties
-		public long Offset { get; private set; }
+        #region Properties
+        public long Offset { get; private set; }
 
         public ulong OldValue { get; private set; }
 
@@ -323,9 +323,9 @@ namespace HexBoxControl
         #region Utils
         private Brush GetBrush(Color color) => new SolidBrush(Enabled ? color : Color.LightGray);
 
-		private Pen GetPen(Color color) => new Pen(Enabled? color : Color.LightGray);
+        private Pen GetPen(Color color) => new Pen(Enabled? color : Color.LightGray);
 
-		private ulong GetCellValue(long index)
+        private ulong GetCellValue(long index)
         {
             ulong data = 0;
             index += BytesPerCell;

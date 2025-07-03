@@ -4,11 +4,11 @@ A text control for convenient hexadecimal representation of the contents of file
 
 Capabilities:
 * Display mode: 
-  *`Bytes`
-  *`Bytes+Ascii`
-  *`Words`
-  *`DoubleWords`
-  *`QuadWords`
+   - `Bytes`
+   - `Bytes+Ascii`
+   - `Words`
+   - `DoubleWords`
+   - `QuadWords`
 * Set data columns count: manual/auto(by width control)
 * Selection of different encoding options for ascii interpretation of bytes
 

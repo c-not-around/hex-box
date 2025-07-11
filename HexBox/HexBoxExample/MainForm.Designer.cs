@@ -28,7 +28,7 @@ namespace HexBoxExample
         /// </summary>
         private void InitializeComponent()
         {
-            HexBoxControl.AnsiCharConvertor ansiCharConvertor1 = new HexBoxControl.AnsiCharConvertor();
+            HexBoxControl.AnsiCharConverter ansiCharConvertor1 = new HexBoxControl.AnsiCharConverter();
             this.Mode = new System.Windows.Forms.ComboBox();
             this.AutoSize = new System.Windows.Forms.CheckBox();
             this.Enable = new System.Windows.Forms.CheckBox();
@@ -149,7 +149,7 @@ namespace HexBoxExample
             this.DumpBox.TabIndex = 0;
             this.DumpBox.Text = "hexBox1";
             this.DumpBox.ViewMode = HexBoxControl.HexBoxViewMode.BytesAscii;
-            this.DumpBox.ColumsChanged += new System.EventHandler(this.DumpBoxColumnsChanged);
+            this.DumpBox.ColumnsChanged += new System.EventHandler(this.DumpBoxColumnsChanged);
             // 
             // OpenFile
             // 

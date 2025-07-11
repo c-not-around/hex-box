@@ -22,14 +22,14 @@ namespace HexBoxExample
             (
                 new object[]
                 {
-                    new AnsiCharConvertor(),
-                    new AsciiCharConvertor(),
-                    new Utf8CharConvertor(),
-                    new Cp1251CharConvertor()
+                    new AnsiCharConverter(),
+                    new AsciiCharConverter(),
+                    new Utf8CharConverter(),
+                    new Cp1251CharConverter()
                 }
             );
             EncodingSelect.SelectedIndex = 0;
-
+            
             byte[] dump = new byte[256];
             for (int i = 0; i < dump.Length; i++)
             {
@@ -40,7 +40,7 @@ namespace HexBoxExample
 
         private void DumpBoxColumnsChanged(object sender, EventArgs e) => Columns.Value = DumpBox.Columns;
 
-		private void ModeSelectedIndexChanged(object sender, EventArgs e)
+        private void ModeSelectedIndexChanged(object sender, EventArgs e)
         {
             Enum.TryParse(Mode.SelectedItem.ToString(), out HexBoxViewMode mode);
             DumpBox.ViewMode = mode;
@@ -48,9 +48,9 @@ namespace HexBoxExample
 
         private void AutoSizeCheckedChanged(object sender, EventArgs e) => DumpBox.ColumnsAuto = AutoSize.Checked;
 
-		private void EnableCheckedChanged(object sender, EventArgs e) => DumpBox.Enabled = Enable.Checked;
+        private void EnableCheckedChanged(object sender, EventArgs e) => DumpBox.Enabled = Enable.Checked;
 
-		private void ColumnsValueChanged(object sender, EventArgs e)
+        private void ColumnsValueChanged(object sender, EventArgs e)
         {
             if (!DumpBox.ColumnsAuto)
             {
@@ -60,7 +60,7 @@ namespace HexBoxExample
 
         private void EncodingSelectSelectedIndexChanged(object sender, EventArgs e) => DumpBox.CharConverter = EncodingSelect.SelectedItem as ICharConverter;
 
-		private void OpenFileClick(object sender, EventArgs e)
+        private void OpenFileClick(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
 

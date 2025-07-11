@@ -70,7 +70,7 @@ namespace HexBoxControl
             _Edit      = new TextBox();
 
             _ViewMode      = HexBoxViewMode.BytesAscii;
-            _CharConverter = new AnsiCharConvertor();
+            _CharConverter = new AnsiCharConverter();
             _StringFormat  = new StringFormat(StringFormat.GenericTypographic);
             _StringFormat.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
 
@@ -79,7 +79,7 @@ namespace HexBoxControl
             _ScrollBar.Size     = new Size(16, Height-2);
             _ScrollBar.Location = new Point(Width-(16+1), 1);
             _ScrollBar.Anchor   = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            _ScrollBar.Scroll  += OnScrolling;
+            _ScrollBar.Scroll  += (sender, e) => Scroll();
             _ScrollBar.Enabled  = false;
             _ScrollBar.Minimum  = 0;
             Controls.Add(_ScrollBar);
@@ -91,7 +91,40 @@ namespace HexBoxControl
             _Edit.ForeColor        = Color.FromArgb(0x2C, 0x2C, 0x2C);
             _Edit.BackColor        = Color.LightGray;
             _Edit.ContextMenuStrip = new ContextMenuStrip();
-            _Edit.KeyPress        += EditKeyPress;
+            _Edit.KeyDown         += (sender, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    EndEditing(true);
+                }
+                else if (e.KeyCode == Keys.Back || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
+                {
+                    return;
+                }
+                else if (Keys.D0 <= e.KeyCode && e.KeyCode <= Keys.D9 ||
+                         Keys.A  <= e.KeyCode && e.KeyCode <= Keys.F)
+                {
+                    char   c = (char)e.KeyCode;
+                    int    p = _Edit.SelectionStart;
+                    int    l = _Edit.SelectionLength;
+                    string s = _Edit.Text;
+
+                    if (l > 0)
+                    {
+                        s = s.Remove(p, l);
+                    }
+
+                    if (s.Length < _Edit.MaxLength)
+                    {
+                        _Edit.Text            = s.Insert(p, c.ToString());
+                        _Edit.SelectionLength = 0;
+                        _Edit.SelectionStart  = p + 1;
+                    }
+                }
+
+                e.Handled          = true;
+                e.SuppressKeyPress = true;
+            };
             Controls.Add(_Edit);
             _Edit.Hide();
 
@@ -170,6 +203,12 @@ namespace HexBoxControl
             }
         }
         
+        public ulong this[long index]
+        {
+            get => GetCellValue(index);
+            set => SetCellValue(index, value);
+        }
+
         public ICharConverter CharConverter
         {
             get => _CharConverter;
@@ -282,45 +321,12 @@ namespace HexBoxControl
         #endregion
 
         #region Events
-        public event EventHandler ColumsChanged;
+        public event EventHandler ColumnsChanged;
 
         public event HexBoxEditEventHandler Edited;
         #endregion
 
-        #region Handlers
-        private void OnScrolling(object sender, ScrollEventArgs e) => Scroll();
-
-        private void EditKeyPress(object sender, KeyPressEventArgs e)
-        {
-            switch (e.KeyChar)
-            {
-                case '\r': EndEditing(true); break;
-                
-                case 'ф':
-                case 'Ф':
-                case 'a': e.KeyChar = 'A'; break;
-                case 'и':
-                case 'И':
-                case 'b': e.KeyChar = 'B'; break;
-                case 'с':
-                case 'С':
-                case 'c': e.KeyChar = 'C'; break;
-                case 'в':
-                case 'В':
-                case 'd': e.KeyChar = 'D'; break;
-                case 'у':
-                case 'У':
-                case 'e': e.KeyChar = 'E'; break;
-                case 'а':
-                case 'А':
-                case 'f': e.KeyChar = 'F'; break;
-
-                default: e.Handled = "0123456789ABCDEF\b".IndexOf(e.KeyChar) == -1; break;
-            }
-        }
-        #endregion
-
-        #region Utils
+        #region Routines
         private Brush GetBrush(Color color) => new SolidBrush(Enabled ? color : Color.LightGray);
 
         private Pen GetPen(Color color) => new Pen(Enabled? color : Color.LightGray);
@@ -406,7 +412,7 @@ namespace HexBoxControl
                 {
                     _DataColums = colums;
 
-                    ColumsChanged?.Invoke(this, EventArgs.Empty);
+                    ColumnsChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
             _LineLength = CellBytes * _DataColums;
